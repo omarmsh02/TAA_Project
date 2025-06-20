@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Home Simulator Pro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div>
+      <div class="loading-spinner"></div>
+      <p style="color: white; margin-top: 20px; font-size: 16px;">Loading Component...</p>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">Smart Home Simulator Pro</div>
+    <div class="control-panel">
+      <button class="btn btn-danger" onclick="eraseAll()">
+        🗑️ Clear All
+      </button>
+      <button class="btn" onclick="undo()">
+        ↩️ Undo
+      </button>
+      <button class="btn" onclick="redo()">
+        ↪️ Redo
+      </button>
+      <div class="button-group">
+        <button class="btn btn-rotation" onclick="rotateSelected(-90)" title="Rotate Left (Q)">
+          ⟲ Left
+        </button>
+        <button class="btn btn-rotation" onclick="rotateSelected(90)" title="Rotate Right (E)">
+          ⟳ Right
+        </button>
+        <button class="btn btn-rotation" onclick="rotateSelectedUp()" title="Rotate Up (R)">
+          ↑ Up
+        </button>
+        <button class="btn btn-rotation" onclick="rotateSelectedDown()" title="Rotate Down (F)">
+          ↓ Down
+        </button>
+      </div>
+      <button class="btn btn-warning" onclick="disconnectSelected()" title="Disconnect (X)">
+        🔗 Disconnect
+      </button>
+      <button class="btn btn-danger" onclick="deleteSelected()" title="Delete (Del)">
+        🗑️ Delete
+      </button>
+    </div>
+  </div>
+
+  <!-- Menu Toggle -->
+  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+
+  <!-- Side Panel -->
+  <div class="side-panel" id="sidePanel">
+    <div class="panel-header">
+      <div class="panel-title">Component Library</div>
+      <div class="panel-subtitle">Click to add components to your design</div>
+    </div>
+    <div class="components-grid">
+      <button class="component-btn" onclick="loadPart('9V-battery.glb')">
+        <div class="component-icon">🔋</div>
+        <div class="component-info">
+          <h4>9V Battery</h4>
+          <p>Power source for your circuit</p>
+        </div>
+      </button>
+      <button class="component-btn" onclick="loadPart('Arduino-UNO.glb')">
+        <div class="component-icon">🧠</div>
+        <div class="component-info">
+          <h4>Arduino UNO</h4>
+          <p>Microcontroller board</p>
+        </div>
+      </button>
+      <button class="component-btn" onclick="loadPart('chassis_-SL.glb')">
+        <div class="component-icon">🧱</div>
+        <div class="component-info">
+          <h4>Chassis</h4>
+          <p>Main structural frame</p>
+        </div>
+      </button>
+      <button class="component-btn" onclick="loadPart('holding_board__.glb')">
+        <div class="component-icon">📦</div>
+        <div class="component-info">
+          <h4>Holding Board</h4>
+          <p>Component mounting surface</p>
+        </div>
+      </button>
+      <button class="component-btn" onclick="loadPart('L293D.glb')">
+        <div class="component-icon">🔌</div>
+        <div class="component-info">
+          <h4>L293D Driver</h4>
+          <p>Motor driver IC</p>
+        </div>
+      </button>
+      <button class="component-btn" onclick="loadPart('master_wheel.glb')">
+        <div class="component-icon">🛞</div>
+        <div class="component-info">
+          <h4>Master Wheel</h4>
+          <p>Primary drive wheel</p>
+        </div>
+      </button>
+      <button class="component-btn" onclick="loadPart('Mechanical_track.glb')">
+        <div class="component-icon">🧲</div>
+        <div class="component-info">
+          <h4>Mechanical Track</h4>
+          <p>Motion transmission system</p>
+        </div>
+      </button>
+      <button class="component-btn" onclick="loadPart('N20%20DC%20Motor.glb')">
+        <div class="component-icon">⚙️</div>
+        <div class="component-info">
+          <h4>N20 DC Motor</h4>
+          <p>Compact DC motor</p>
+        </div>
+      </button>
+      <button class="component-btn" onclick="loadPart('slave_wheel_SL.glb')">
+        <div class="component-icon">🛞</div>
+        <div class="component-info">
+          <h4>Slave Wheel</h4>
+          <p>Secondary support wheel</p>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Selection Indicator -->
+  <div class="selection-indicator" id="selectionIndicator">
+    No component selected
+  </div>
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <div class="status-left">
+      <div class="status-item">
+        <div class="status-dot"></div>
+        <span>Ready</span>
+      </div>
+      <div class="status-item">
+        <span id="componentCount">Components: 0</span>
+      </div>
+    </div>
+    <div class="status-right">
+      <span>Q/E: Rotate L/R | R/F: Rotate U/D | X: Disconnect | Del: Delete</span>
+    </div>
+  </div>
+
+  <canvas id="renderCanvas"></canvas>
+
+  <!-- Babylon.js Libraries -->
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <script src="https://cdn.babylonjs.com/loaders/babylon.glTF2FileLoader.min.js"></script>
+  <script src="https://cdn.babylonjs.com/materialsLibrary/babylon.gridMaterial.min.js"></script>
+
+  <!-- Custom Scripts -->
+  <script src="sceneSetup.js"></script>
+  <script src="partLoader.js"></script>
+  <script src="dragLogic.js"></script>
+
+  <script>
+    // Menu toggle functionality
+    function toggleMenu() {
+      const panel = document.getElementById("sidePanel");
+      panel.classList.toggle("open");
+    }
+
+    // Initialize component count when page loads
+    window.addEventListener('load', function() {
+      updateComponentCount();
+    });
+  </script>
+</body>
+</html>
