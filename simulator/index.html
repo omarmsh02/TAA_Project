@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Smart Home Simulator Pro</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
   <!-- Loading Overlay -->
@@ -83,7 +83,7 @@
           <p>Main structural frame</p>
         </div>
       </button>
-      <button class="component-btn" onclick="loadPart('holding_board__.glb')">
+      <button class="component-btn" onclick="loadPart('holding_board__9V.glb')">
         <div class="component-icon">📦</div>
         <div class="component-info">
           <h4>Holding Board</h4>
@@ -104,14 +104,14 @@
           <p>Primary drive wheel</p>
         </div>
       </button>
-      <button class="component-btn" onclick="loadPart('Mechanical_track.glb')">
+      <button class="component-btn" onclick="loadPart('Mechacnical_track_Yellow.glb')">
         <div class="component-icon">🧲</div>
         <div class="component-info">
           <h4>Mechanical Track</h4>
           <p>Motion transmission system</p>
         </div>
       </button>
-      <button class="component-btn" onclick="loadPart('N20%20DC%20Motor.glb')">
+      <button class="component-btn" onclick="loadPart('N20DCMotor.glb')">
         <div class="component-icon">⚙️</div>
         <div class="component-info">
           <h4>N20 DC Motor</h4>
@@ -157,9 +157,9 @@
   <script src="https://cdn.babylonjs.com/materialsLibrary/babylon.gridMaterial.min.js"></script>
 
   <!-- Custom Scripts -->
-  <script src="sceneSetup.js"></script>
-  <script src="partLoader.js"></script>
-  <script src="dragLogic.js"></script>
+  <script src="./sceneSetup.js"></script>
+  <script src="./partLoader.js"></script>
+  <script src="./dragLogic.js"></script>
 
   <script>
     // Menu toggle functionality

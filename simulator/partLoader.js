@@ -2,7 +2,7 @@
 window.loadPart = function (fileName) {
   showLoading();
   
-  BABYLON.SceneLoader.ImportMesh("", "./glb_images/", fileName, scene, (meshes) => {
+  BABYLON.SceneLoader.ImportMesh("", "../glb_images/", fileName, scene, (meshes) => {
     hideLoading();
     
     if (meshes.length === 0) {
